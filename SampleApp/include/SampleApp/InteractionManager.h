@@ -1,7 +1,5 @@
 /*
- * InteractionManager.h
- *
- * Copyright (c) 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,8 +13,8 @@
  * permissions and limitations under the License.
  */
 
-#ifndef ALEXA_CLIENT_SDK_SAMPLE_APP_INCLUDE_SAMPLE_APP_INTERACTION_MANAGER_H_
-#define ALEXA_CLIENT_SDK_SAMPLE_APP_INCLUDE_SAMPLE_APP_INTERACTION_MANAGER_H_
+#ifndef ALEXA_CLIENT_SDK_SAMPLEAPP_INCLUDE_SAMPLEAPP_INTERACTIONMANAGER_H_
+#define ALEXA_CLIENT_SDK_SAMPLEAPP_INCLUDE_SAMPLEAPP_INTERACTIONMANAGER_H_
 
 #include <memory>
 
@@ -24,8 +22,10 @@
 #include <AVSCommon/SDKInterfaces/SpeakerInterface.h>
 #include <AVSCommon/Utils/RequiresShutdown.h>
 #include <DefaultClient/DefaultClient.h>
+#include <ESP/ESPDataModifierInterface.h>
+#include <RegistrationManager/CustomerDataManager.h>
 
-#include "GuiRenderer.h"
+#include "KeywordObserver.h"
 #include "PortAudioMicrophoneWrapper.h"
 #include "UIManager.h"
 
@@ -49,7 +49,10 @@ public:
         std::shared_ptr<sampleApp::UIManager> userInterface,
         capabilityAgents::aip::AudioProvider holdToTalkAudioProvider,
         capabilityAgents::aip::AudioProvider tapToTalkAudioProvider,
-        capabilityAgents::aip::AudioProvider wakeWordAudioProvider = capabilityAgents::aip::AudioProvider::null());
+        capabilityAgents::aip::AudioProvider wakeWordAudioProvider = capabilityAgents::aip::AudioProvider::null(),
+        std::shared_ptr<esp::ESPDataProviderInterface> espProvider = nullptr,
+        std::shared_ptr<esp::ESPDataModifierInterface> espModifier = nullptr,
+        std::shared_ptr<avsCommon::sdkInterfaces::CallManagerInterface> callManager = nullptr);
 
     /**
      * Begins the interaction between the Sample App and the user. This should only be called at startup.
@@ -60,6 +63,11 @@ public:
      * Should be called when a user requests help.
      */
     void help();
+
+    /**
+     * Should be called when a user requests help and the application failed to connect to AVS.
+     */
+    void limitedHelp();
 
     /**
      * Toggles the microphone state if the Sample App was built with wakeword. When the microphone is turned off, the
@@ -131,6 +139,18 @@ public:
     void speakerControl();
 
     /**
+     * Should be called whenever a users requests to set the firmware version.
+     */
+    void firmwareVersionControl();
+
+    /**
+     * Update the firmware version.
+     *
+     * @param firmwareVersion The new firmware version.
+     */
+    void setFirmwareVersion(avsCommon::sdkInterfaces::softwareInfo::FirmwareVersion firmwareVersion);
+
+    /**
      * Should be called after a user selects a speaker.
      */
     void volumeControl();
@@ -146,9 +166,59 @@ public:
     void setMute(avsCommon::sdkInterfaces::SpeakerInterface::Type type, bool mute);
 
     /**
+     * Reset the device and remove any customer data.
+     */
+    void resetDevice();
+
+    /**
+     * Prompts the user to confirm the intent to reset the device.
+     */
+    void confirmResetDevice();
+
+    /**
+     * Should be called whenever a user requests for ESP control.
+     */
+    void espControl();
+
+    /**
+     * Should be called whenever a user requests to toggle the ESP support.
+     */
+    void toggleESPSupport();
+
+    /**
+     * Should be called whenever a user requests to set the @c voiceEnergy sent in ReportEchoSpatialPerceptionData
+     * event.
+     *
+     * @param voiceEnergy The voice energy measurement to be set as the ESP measurement.
+     */
+    void setESPVoiceEnergy(const std::string& voiceEnergy);
+
+    /**
+     * Should be called whenever a user requests set the @c ambientEnergy sent in ReportEchoSpatialPerceptionData
+     * event.
+     *
+     * @param ambientEnergy The ambient energy measurement to be set as the ESP measurement.
+     */
+    void setESPAmbientEnergy(const std::string& ambientEnergy);
+
+    /**
+     * Grants the user access to the communications controls.
+     */
+    void commsControl();
+
+    /**
+     * Should be called when the user wants to accept a call.
+     */
+    void acceptCall();
+
+    /**
+     * Should be called when the user wants to stop a call.
+     */
+    void stopCall();
+
+    /**
      * UXDialogObserverInterface methods
      */
-
     void onDialogUXStateChanged(DialogUXState newState) override;
 
 private:
@@ -160,6 +230,15 @@ private:
 
     /// The user interface manager.
     std::shared_ptr<sampleApp::UIManager> m_userInterface;
+
+    /// The ESP provider.
+    std::shared_ptr<esp::ESPDataProviderInterface> m_espProvider;
+
+    /// The ESP modifier.
+    std::shared_ptr<esp::ESPDataModifierInterface> m_espModifier;
+
+    /// The call manager.
+    std::shared_ptr<avsCommon::sdkInterfaces::CallManagerInterface> m_callManager;
 
     /// The hold to talk audio provider.
     capabilityAgents::aip::AudioProvider m_holdToTalkAudioProvider;
@@ -193,4 +272,4 @@ private:
 }  // namespace sampleApp
 }  // namespace alexaClientSDK
 
-#endif  // ALEXA_CLIENT_SDK_SAMPLE_APP_INCLUDE_SAMPLE_APP_INTERACTION_MANAGER_H_
+#endif  // ALEXA_CLIENT_SDK_SAMPLEAPP_INCLUDE_SAMPLEAPP_INTERACTIONMANAGER_H_

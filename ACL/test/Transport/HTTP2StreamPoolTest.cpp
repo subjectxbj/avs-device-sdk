@@ -1,7 +1,5 @@
 /*
- * HTTP2StreamPoolTest.cpp
- *
- * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -60,7 +58,7 @@ public:
 };
 
 void HTTP2StreamPoolTest::SetUp() {
-    AlexaClientSDKInit::initialize(std::vector<std::istream*>());
+    AlexaClientSDKInit::initialize(std::vector<std::shared_ptr<std::istream>>());
     m_mockMessageRequest = std::make_shared<MockMessageRequest>();
     m_testableConsumer = std::make_shared<TestableConsumer>();
     m_testableStreamPool = std::make_shared<HTTP2StreamPool>(TEST_MAX_STREAMS, nullptr);

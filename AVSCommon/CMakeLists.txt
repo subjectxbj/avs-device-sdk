@@ -8,31 +8,41 @@ add_subdirectory("AVS")
 add_subdirectory("Utils")
 
 add_library(AVSCommon SHARED
-    AVS/src/AbstractConnection.cpp
-    AVS/src/AlexaClientSDKInit.cpp
-    AVS/src/Attachment/Attachment.cpp
-    AVS/src/Attachment/AttachmentManager.cpp
-    AVS/src/Attachment/InProcessAttachment.cpp
-    AVS/src/Attachment/InProcessAttachmentReader.cpp
-    AVS/src/Attachment/InProcessAttachmentWriter.cpp
     AVS/src/AVSDirective.cpp
     AVS/src/AVSMessage.cpp
     AVS/src/AVSMessageHeader.cpp
+    AVS/src/AbstractAVSConnectionManager.cpp
+    AVS/src/ExternalMediaPlayer/AdapterUtils.cpp
+    AVS/src/AlexaClientSDKInit.cpp
+    AVS/src/Attachment/Attachment.cpp
+    AVS/src/Attachment/AttachmentManager.cpp
+    AVS/src/Attachment/AttachmentUtils.cpp
+    AVS/src/Attachment/InProcessAttachment.cpp
+    AVS/src/Attachment/InProcessAttachmentReader.cpp
+    AVS/src/Attachment/InProcessAttachmentWriter.cpp
+    AVS/src/CapabilityConfiguration.cpp
     AVS/src/CapabilityAgent.cpp
+    AVS/src/DialogUXStateAggregator.cpp
     AVS/src/EventBuilder.cpp
     AVS/src/ExceptionEncounteredSender.cpp
     AVS/src/HandlerAndPolicy.cpp
     AVS/src/MessageRequest.cpp
     AVS/src/NamespaceAndName.cpp
-    AVS/src/DialogUXStateAggregator.cpp
+    Utils/src/Bluetooth/SDPRecords.cpp
+    Utils/src/BluetoothEventBus.cpp
     Utils/src/Configuration/ConfigurationNode.cpp
+    Utils/src/DeviceInfo.cpp
     Utils/src/Executor.cpp
     Utils/src/FileUtils.cpp
+    Utils/src/FormattedAudioStreamAdapter.cpp
     Utils/src/JSONUtils.cpp
+    Utils/src/LibcurlUtils/CallbackData.cpp
     Utils/src/LibcurlUtils/CurlEasyHandleWrapper.cpp
     Utils/src/LibcurlUtils/CurlMultiHandleWrapper.cpp
     Utils/src/LibcurlUtils/HTTPContentFetcherFactory.cpp
     Utils/src/LibcurlUtils/HttpPost.cpp
+    Utils/src/LibcurlUtils/HttpPut.cpp
+    Utils/src/LibcurlUtils/HTTPResponse.cpp
     Utils/src/LibcurlUtils/LibCurlHttpContentFetcher.cpp
     Utils/src/LibcurlUtils/LibcurlUtils.cpp
     Utils/src/Logger/ConsoleLogger.cpp
@@ -43,17 +53,23 @@ add_library(AVSCommon SHARED
     Utils/src/Logger/Logger.cpp
     Utils/src/Logger/LoggerSinkManager.cpp
     Utils/src/Logger/LoggerUtils.cpp
+    Utils/src/Logger/LogStringFormatter.cpp
     Utils/src/Logger/ModuleLogger.cpp
     Utils/src/Logger/ThreadMoniker.cpp
+    Utils/src/MacAddressString.cpp
     Utils/src/Metrics.cpp
+    Utils/src/Network/InternetConnectionMonitor.cpp
     Utils/src/RequiresShutdown.cpp
+    Utils/src/RetryTimer.cpp
+    Utils/src/SafeCTimeAccess.cpp
+    Utils/src/Stream/StreamFunctions.cpp
+    Utils/src/Stream/Streambuf.cpp
     Utils/src/StringUtils.cpp
     Utils/src/TaskQueue.cpp
     Utils/src/TaskThread.cpp
     Utils/src/TimePoint.cpp
-    Utils/src/Timer.cpp
     Utils/src/TimeUtils.cpp
-    Utils/src/RetryTimer.cpp
+    Utils/src/Timer.cpp
     Utils/src/UUIDGeneration.cpp)
 
 target_include_directories(AVSCommon PUBLIC

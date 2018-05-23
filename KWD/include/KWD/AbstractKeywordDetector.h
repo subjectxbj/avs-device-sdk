@@ -1,7 +1,5 @@
 /*
- * AbstractKeywordDetector.h
- *
- * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,8 +13,8 @@
  * permissions and limitations under the License.
  */
 
-#ifndef ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACT_KEY_WORD_DETECTOR_H_
-#define ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACT_KEY_WORD_DETECTOR_H_
+#ifndef ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACTKEYWORDDETECTOR_H_
+#define ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACTKEYWORDDETECTOR_H_
 
 #include <mutex>
 #include <unordered_set>
@@ -87,12 +85,14 @@ protected:
      * @param keyword The keyword detected.
      * @param beginIndex The absolute begin index of the first part of the keyword found within the @c stream.
      * @param endIndex The absolute end index of the last part of the keyword within the stream of the @c stream.
+     * @param KWDMetadata Wake word engine metadata.
      */
     void notifyKeyWordObservers(
         std::shared_ptr<avsCommon::avs::AudioInputStream> stream,
         std::string keyword,
         avsCommon::avs::AudioInputStream::Index beginIndex,
-        avsCommon::avs::AudioInputStream::Index endIndex) const;
+        avsCommon::avs::AudioInputStream::Index endIndex,
+        std::shared_ptr<const std::vector<char>> KWDMetadata = nullptr) const;
 
     /**
      * Notifies all keyword detector state observers of state changes in the derived detector.
@@ -159,4 +159,4 @@ private:
 }  // namespace kwd
 }  // namespace alexaClientSDK
 
-#endif  // ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACT_KEY_WORD_DETECTOR_H_
+#endif  // ALEXA_CLIENT_SDK_KWD_INCLUDE_KWD_ABSTRACTKEYWORDDETECTOR_H_

@@ -1,7 +1,5 @@
 /*
- * KeyWordObserverInterface.h
- *
- * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,10 +13,12 @@
  * permissions and limitations under the License.
  */
 
-#ifndef ALEXA_CLIENT_SDK_AVS_COMMON_SDK_INTERFACES_INCLUDE_AVS_COMMON_SDK_INTERFACES_KEY_WORD_OBSERVER_INTERFACE_H_
-#define ALEXA_CLIENT_SDK_AVS_COMMON_SDK_INTERFACES_INCLUDE_AVS_COMMON_SDK_INTERFACES_KEY_WORD_OBSERVER_INTERFACE_H_
+#ifndef ALEXA_CLIENT_SDK_AVSCOMMON_SDKINTERFACES_INCLUDE_AVSCOMMON_SDKINTERFACES_KEYWORDOBSERVERINTERFACE_H_
+#define ALEXA_CLIENT_SDK_AVSCOMMON_SDKINTERFACES_INCLUDE_AVSCOMMON_SDKINTERFACES_KEYWORDOBSERVERINTERFACE_H_
 
 #include <limits>
+#include <memory>
+#include <vector>
 
 #include "AVSCommon/AVS/AudioInputStream.h"
 
@@ -52,16 +52,18 @@ public:
      * If this is set to UNSPECIFIED_INDEX, then it should be ignored.
      * @param endIndex The optional absolute end index of the last part of the keyword within the stream of the @c
      * stream. If this is set to UNSPECIFIED_INDEX, then it should be ignored.
+     * @param KWDMetadata Wake word engine metadata.
      */
     virtual void onKeyWordDetected(
         std::shared_ptr<avs::AudioInputStream> stream,
         std::string keyword,
         avs::AudioInputStream::Index beginIndex = UNSPECIFIED_INDEX,
-        avs::AudioInputStream::Index endIndex = UNSPECIFIED_INDEX) = 0;
+        avs::AudioInputStream::Index endIndex = UNSPECIFIED_INDEX,
+        std::shared_ptr<const std::vector<char>> KWDMetadata = nullptr) = 0;
 };
 
 }  // namespace sdkInterfaces
 }  // namespace avsCommon
 }  // namespace alexaClientSDK
 
-#endif  // ALEXA_CLIENT_SDK_AVS_COMMON_SDK_INTERFACES_INCLUDE_AVS_COMMON_SDK_INTERFACES_KEY_WORD_OBSERVER_INTERFACE_H_
+#endif  // ALEXA_CLIENT_SDK_AVSCOMMON_SDKINTERFACES_INCLUDE_AVSCOMMON_SDKINTERFACES_KEYWORDOBSERVERINTERFACE_H_

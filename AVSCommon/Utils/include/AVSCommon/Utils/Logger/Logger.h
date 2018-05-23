@@ -1,7 +1,5 @@
 /*
- * Logger.h
- *
- * Copyright 2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -15,8 +13,8 @@
  * permissions and limitations under the License.
  */
 
-#ifndef ALEXA_CLIENT_SDK_AVS_COMMON_UTILS_INCLUDE_AVS_COMMON_UTILS_LOGGER_LOGGER_H_
-#define ALEXA_CLIENT_SDK_AVS_COMMON_UTILS_INCLUDE_AVS_COMMON_UTILS_LOGGER_LOGGER_H_
+#ifndef ALEXA_CLIENT_SDK_AVSCOMMON_UTILS_INCLUDE_AVSCOMMON_UTILS_LOGGER_LOGGER_H_
+#define ALEXA_CLIENT_SDK_AVSCOMMON_UTILS_INCLUDE_AVSCOMMON_UTILS_LOGGER_LOGGER_H_
 
 #include <atomic>
 #include <chrono>
@@ -185,6 +183,19 @@ public:
     void log(Level level, const LogEntry& entry);
 
     /**
+     * Send a log entry to this Logger while program is exiting.
+     *
+     * Use this method if the code may be run while destroying a static object. This method should not rely in any
+     * other static object.
+     *
+     * @note The user code should still ensure that the Logger object itself is valid.
+     *
+     * @param level The severity Level to associate with this log entry.
+     * @param entry Object used to build the text of this log entry.
+     */
+    void logAtExit(Level level, const LogEntry& entry);
+
+    /**
      * Emit a log entry.
      * NOTE: This method must be thread-safe.
      * NOTE: Delays in returning from this method may hold up calls to Logger::log().
@@ -228,6 +239,14 @@ protected:
     std::atomic<Level> m_level;
 
 private:
+    /**
+     * Initialize the log level from the specified @c ConfigurationNode.
+     *
+     * @param configuration The @c ConfigurationNode to read the log level from.
+     * @return Whether the logLevel was applied.
+     */
+    bool initLogLevel(const configuration::ConfigurationNode configuration);
+
     /**
      * Notify the observers of a logLevel change.
      */
@@ -551,4 +570,4 @@ inline Logger& ACSDK_GET_LOGGER_FUNCTION() {
  */
 #define ACSDK_CRITICAL(entry) ACSDK_LOG(alexaClientSDK::avsCommon::utils::logger::Level::CRITICAL, entry)
 
-#endif  // ALEXA_CLIENT_SDK_AVS_COMMON_UTILS_INCLUDE_AVS_COMMON_UTILS_LOGGER_LOGGER_H_
+#endif  // ALEXA_CLIENT_SDK_AVSCOMMON_UTILS_INCLUDE_AVSCOMMON_UTILS_LOGGER_LOGGER_H_

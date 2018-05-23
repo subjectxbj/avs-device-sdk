@@ -1,7 +1,5 @@
 /*
- * AVSConnectionManagerTest.cpp
- *
- * Copyright 2016-2017 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2017-2018 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -81,7 +79,7 @@ public:
 };
 
 void AVSConnectionManagerTest::SetUp() {
-    AlexaClientSDKInit::initialize(std::vector<std::istream*>());
+    AlexaClientSDKInit::initialize(std::vector<std::shared_ptr<std::istream>>());
     m_messageRouter = std::make_shared<MockMessageRouter>();
     m_observer = std::make_shared<MockConnectionStatusObserver>();
     m_messageObserver = std::make_shared<MockMessageObserver>();
@@ -206,7 +204,7 @@ TEST_F(AVSConnectionManagerTest, sendMessageRequestTest) {
     // TODO: ACSDK-421: Revert this to use send().
     EXPECT_CALL(*m_messageRouter, sendMessage(_)).Times(1);
     std::shared_ptr<avsCommon::avs::MessageRequest> messageRequest;
-    messageRequest = std::make_shared<avsCommon::avs::MessageRequest>("Test message", nullptr);
+    messageRequest = std::make_shared<avsCommon::avs::MessageRequest>("Test message");
     m_avsConnectionManager->sendMessage(messageRequest);
 }
 
